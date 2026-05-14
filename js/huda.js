@@ -638,6 +638,8 @@ const Huda = {
 
   // Chip handler — uses explicit key/value so it never goes through NLP
   handleChip(key, value) {
+    // Chip clicks are explicit user choices — reset the "I don't understand" counter.
+    this.ctx.unknownCount = 0;
     switch (key) {
       case "looking_for":  return this.chooseLookingFor(value);
       case "category":     return this.chooseCategory(value);
@@ -655,6 +657,9 @@ const Huda = {
   async handleInput(text, fromChip) {
     const lang = getLang();
     const intent = this.matchIntent(text);
+
+    // Reset "I don't understand" counter whenever we recognize anything.
+    if (intent.intent !== "unknown") this.ctx.unknownCount = 0;
 
     // Global intents (work in any state)
     if (intent.intent === "location")  return this.replyLocation();
@@ -1050,17 +1055,72 @@ const Huda = {
       </a>`;
   },
 
-  handleUnknown(text) {
+  // Interactive "I don't quite get it" handler — never just gives up. It tries
+  // (1) to extract furniture / business hints from the message and offer concrete
+  // follow-ups, (2) to ask a focused clarifying question with 6 distinct paths,
+  // and finally (3) after 3 unsuccessful rounds escalates to a real staff member.
+  async handleUnknown(text) {
     const lang = getLang();
-    return this.botSays(
-      lang === "ar"
-        ? "ما فهمتك بالضبط 🤔 اختر من الاقتراحات تحت، أو لو تبي تكلم موظف فيدا مباشرة:"
-        : "Hmm, I didn't quite catch that 🤔 Pick from the options below, or chat with a real VIDA rep:",
-      [
-        { label: lang === "ar" ? "💬 كلم موظف فيدا" : "💬 Talk to a real rep", key: "command", value: "agent" },
-        { label: lang === "ar" ? "↩ ابدأ من جديد"   : "↩ Start over",          key: "command", value: "restart" },
-      ]
-    );
+    this.ctx.unknownCount = (this.ctx.unknownCount || 0) + 1;
+
+    // Safety net — if the user keeps sending unparseable messages, hand off.
+    if (this.ctx.unknownCount >= 3) {
+      await this.botSays(lang === "ar"
+        ? "خلني أحوّلك لواحد من موظفينا الحقيقيين — هم أعرف بالتفاصيل اللي تبيها 🙏"
+        : "Let me hand you off to one of our real reps — they'll get you the details faster 🙏");
+      return this.handoffToWhatsApp();
+    }
+
+    // (1) Scan for any product / business hints in the message
+    const cats = this.parseFurnitureNeeds(text);
+    const biz  = this.detectBusinessType(text);
+
+    if (cats.size > 0) {
+      const lookup = (window.CATEGORIES || []).reduce((m, c) => (m[c.id] = c, m), {});
+      const list = Array.from(cats);
+      const labels = list.map(c => lang === "ar" ? (lookup[c]?.ar || c) : (lookup[c]?.en || c)).join(" / ");
+      await this.botSays(lang === "ar"
+        ? `لاحظت إنك ذكرت <strong>${labels}</strong> 🌿 خبرني تبي إيش بالضبط؟`
+        : `I spotted <strong>${labels}</strong> in there 🌿 What exactly are you after?`);
+      this.renderSuggestions([
+        ...list.map(c => ({
+          label: lang === "ar" ? `🔍 شوف ${lookup[c]?.ar || c}` : `🔍 Browse ${lookup[c]?.en || c}`,
+          action: () => this.recommendByCategory(c),
+        })),
+        { label: lang === "ar" ? "💰 أبي أسأل عن السعر"   : "💰 Ask about price",       action: () => this.replyPayment() },
+        { label: lang === "ar" ? "💬 كلم موظف فيدا"        : "💬 Talk to a real rep", key: "command", value: "agent" },
+      ]);
+      return;
+    }
+
+    if (biz) return this.applyBusinessType(biz);
+
+    // (2) No hints — ask a focused clarifying question with multiple distinct paths
+    const phrasings = lang === "ar" ? [
+      "أحتاج توضيح بسيط منك 🌿 إيش اللي يهمّك بالضبط؟",
+      "خلني أفهم نقطتك أكثر — أي حاجه من دي تقربلك؟",
+      "ودي أساعدك صح 🌿 بس عشان أوصل لإجابه دقيقه، إيش اللي تدوّر عليه؟",
+    ] : [
+      "Help me out with a quick clarification 🌿 What's the core thing you're after?",
+      "Let me zoom in on what you mean — which of these is closest?",
+      "I want to get you the right answer 🌿 Which of these matches your need?",
+    ];
+    const prompt = phrasings[Math.floor(Math.random() * phrasings.length)];
+
+    // Try to spot a price-ish word so we route relevantly
+    const t = this.normalizeDialect(this.normalizeDigits(text)).toLowerCase();
+    const isPriceLeaning = /(سعر|تكلف|اقساط|دفع|price|cost|installment|pay)/i.test(t);
+
+    await this.botSays(prompt);
+    this.renderSuggestions([
+      { label: lang === "ar" ? "🏢 أؤثث مكتب جديد"     : "🏢 Furnishing a new office",     key: "looking_for", value: "office" },
+      { label: lang === "ar" ? "🛋 أبي قطعه معينه"     : "🛋 Want a specific piece",         key: "looking_for", value: "piece" },
+      { label: lang === "ar" ? "💰 أسأل عن الأسعار"   : "💰 Pricing question",              action: () => this.replyPayment() },
+      { label: lang === "ar" ? "🚚 سؤال عن التوصيل"   : "🚚 Delivery question",             action: () => this.replyDelivery() },
+      { label: lang === "ar" ? "📍 أبي العنوان"         : "📍 Where you guys located",       action: () => this.replyLocation() },
+      { label: lang === "ar" ? "💬 كلم موظف فيدا"      : "💬 Talk to a real rep",           key: "command", value: "agent" },
+      ...(isPriceLeaning ? [] : []),
+    ]);
   },
 
   // ───────── RESTART ─────────
