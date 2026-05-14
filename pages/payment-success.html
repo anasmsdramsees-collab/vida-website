@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" data-title-en="Order Confirmed" data-title-ar="تم تأكيد الطلب">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    /* Set lang/dir BEFORE first paint — prevents English flashing under Arabic */
+    (function() {
+      try {
+        var lang = localStorage.getItem("vida_lang") || "en";
+        document.documentElement.lang = lang;
+        document.documentElement.dir  = lang === "ar" ? "rtl" : "ltr";
+      } catch (e) {}
+    })();
+  </script>
+  <title>Order Confirmed — VIDA Office Furniture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+</head>
+<body data-page="success">
+
+  <section class="section">
+    <div class="container" style="max-width: 760px;">
+      <div style="background:#fff; border:1px solid var(--vida-line); border-radius:var(--r-lg); padding: clamp(32px, 5vw, 56px); text-align:center;">
+        <div style="width:88px;height:88px;background:linear-gradient(135deg,var(--vida-gold),var(--vida-gold-2));color:var(--vida-darker);border-radius:50%;display:grid;place-items:center;margin:0 auto 24px;box-shadow: 0 10px 30px rgba(200,165,91,.35);">
+          <svg style="width:44px;height:44px" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </div>
+
+        <h1 style="margin-bottom: 8px;">
+          <span data-lang-en>Thank you — order confirmed!</span>
+          <span data-lang-ar>شكراً لك — تم تأكيد طلبك!</span>
+        </h1>
+        <p class="muted" style="font-size: 1.05rem;" id="orderLine"></p>
+
+        <div style="background:var(--vida-bone); border-radius: var(--r); padding: 20px; margin: 28px 0; text-align: start;" id="orderSummary"></div>
+
+        <p style="margin-bottom: 24px;">
+          <span data-lang-en>Our team will contact you within 24 hours to confirm delivery details.</span>
+          <span data-lang-ar>فريقنا هيتواصل معاك خلال 24 ساعة لتأكيد تفاصيل التسليم.</span>
+        </p>
+
+        <div style="display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+          <a href="../index.html" class="btn btn--primary"><span data-lang-en>Back to Home</span><span data-lang-ar>الرئيسية</span></a>
+          <a href="products.html" class="btn btn--ghost"><span data-lang-en>Continue Shopping</span><span data-lang-ar>متابعة التسوّق</span></a>
+          <a id="waBtn" class="btn btn--gold" target="_blank">
+            <svg style="width:18px;height:18px" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/></svg>
+            <span data-lang-en>Notify us on WhatsApp</span><span data-lang-ar>أرسل عبر واتساب</span>
+          </a>
+        </div>
+
+        <div style="border-top:1px solid var(--vida-line); margin-top: 40px; padding-top: 24px;">
+          <h4 style="margin-bottom: 8px;"><span data-lang-en>Need help?</span><span data-lang-ar>محتاج مساعدة؟</span></h4>
+          <p class="muted" style="margin: 0; font-size: .92rem;">
+            <span data-lang-en>Call us at <a href="tel:+966550881411" style="color:var(--vida-dark);font-weight:600;">0550881411</a> or email <a href="mailto:info@vidaaloula.com" style="color:var(--vida-dark);font-weight:600;">info@vidaaloula.com</a></span>
+            <span data-lang-ar>اتصل بنا على <a href="tel:+966550881411" style="color:var(--vida-dark);font-weight:600;">0550881411</a> أو راسلنا على <a href="mailto:info@vidaaloula.com" style="color:var(--vida-dark);font-weight:600;">info@vidaaloula.com</a></span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/payments-config.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    function render() {
+      const params = new URLSearchParams(location.search);
+      const orderId = params.get("order") || params.get("id") || "";
+      const method  = params.get("method") || "";
+      const wa      = params.get("wa");
+      const moyasarStatus = params.get("status"); // Moyasar returns ?id=...&status=paid
+      const moyasarPid    = params.get("id");
+      const lang    = getLang();
+
+      // If Moyasar callback returned and we don't have an orderId, find by callback
+      const orders = JSON.parse(localStorage.getItem("vida_orders") || "[]");
+      const order  = orders.find(o => o.id === orderId) || orders[orders.length - 1];
+
+      const orderLineEl = document.getElementById("orderLine");
+      if (order) {
+        orderLineEl.innerHTML = `${lang==="ar"?"رقم الطلب":"Order"} <strong style="color:var(--vida-darker);">#${order.id}</strong>`;
+      } else {
+        orderLineEl.innerHTML = `${lang==="ar"?"تم استلام طلبك بنجاح.":"Your order has been received."}`;
+      }
+
+      const summaryEl = document.getElementById("orderSummary");
+      if (order) {
+        const methodLabels = {
+          moyasar:  lang==="ar" ? "بطاقة / مدى / Apple Pay عبر Moyasar" : "Card / Mada / Apple Pay (Moyasar)",
+          tabby:    lang==="ar" ? `تقسيط Tabby — ${PAYMENTS.tabby.installments} دفعات` : `Tabby — ${PAYMENTS.tabby.installments} installments`,
+          tamara:   lang==="ar" ? `تقسيط تمارا — ${PAYMENTS.tamara.installments} دفعات` : `Tamara — ${PAYMENTS.tamara.installments} installments`,
+          cod:      lang==="ar" ? "الدفع عند الاستلام" : "Cash on Delivery",
+          bank:     lang==="ar" ? "تحويل بنكي" : "Bank Transfer",
+          invoice:  lang==="ar" ? "فاتورة شركة / أمر شراء" : "Corporate Invoice / PO",
+        };
+        const items = (order.items || []).map(it => `
+          <div style="display:flex; justify-content:space-between; padding: 6px 0; border-bottom: 1px dashed var(--vida-line); font-size:.92rem;">
+            <span>${it.id} · ${typeof it.name === "object" ? (lang==="ar"?it.name.ar:it.name.en) : it.name} × ${it.qty}</span>
+            <strong>${it.line_total.toLocaleString()} ${lang==="ar"?"ر.س":"SAR"}</strong>
+          </div>`).join("");
+        summaryEl.innerHTML = `
+          <div style="display:flex; justify-content:space-between; padding-bottom: 10px; border-bottom:1px solid var(--vida-line); margin-bottom: 12px;">
+            <span class="muted">${lang==="ar"?"طريقة الدفع":"Payment method"}</span>
+            <strong>${methodLabels[order.payment_method || method] || (order.payment_method || method)}</strong>
+          </div>
+          ${items}
+          <div style="display:flex; justify-content:space-between; padding-top: 12px; font-size:1.1rem;">
+            <strong>${lang==="ar"?"الإجمالي":"Total"}</strong>
+            <strong style="color:var(--vida-dark);">${order.total.toLocaleString()} ${lang==="ar"?"ر.س":"SAR"}</strong>
+          </div>
+          ${order.payment_method === "bank" ? `
+            <div style="margin-top: 16px; padding: 12px; background:#fff; border-radius: var(--r-sm); font-size:.85rem;">
+              <strong>${lang==="ar"?"تفاصيل التحويل":"Transfer Details"}</strong><br>
+              ${lang==="ar"?PAYMENTS.bank.bank_name_ar:PAYMENTS.bank.bank_name_en}<br>
+              <span style="font-family:monospace;">IBAN: ${PAYMENTS.bank.iban}</span>
+            </div>` : ""}
+          ${moyasarPid ? `
+            <div style="margin-top: 16px; padding: 12px; background:#e7faea; border-radius: var(--r-sm); font-size:.85rem; color:var(--vida-dark);">
+              ✓ ${lang==="ar"?"تم الدفع — رقم العملية":"Payment ID"}: <strong>${moyasarPid}</strong>
+            </div>` : ""}
+        `;
+      } else {
+        summaryEl.style.display = "none";
+      }
+
+      // WhatsApp link
+      const waBtn = document.getElementById("waBtn");
+      if (wa) {
+        waBtn.href = wa;
+      } else if (order) {
+        const msg = [
+          `*${lang==="ar"?"تم إتمام الطلب":"Order placed"} — ${order.id}*`,
+          `${order.customer.name} · ${order.customer.phone}`,
+          `${order.total.toLocaleString()} SAR · ${order.payment_method}`,
+        ].join("\n");
+        waBtn.href = `https://wa.me/${VIDA.whatsapp}?text=${encodeURIComponent(msg)}`;
+      } else {
+        waBtn.href = `https://wa.me/${VIDA.whatsapp}`;
+      }
+
+      setLang(lang);
+    }
+    window.onLangChange = render;
+    document.addEventListener("DOMContentLoaded", () => setTimeout(render, 0));
+  </script>
+</body>
+</html>

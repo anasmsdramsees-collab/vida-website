@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" data-title-en="Products" data-title-ar="المنتجات">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    /* Set lang/dir BEFORE first paint — prevents English flashing under Arabic */
+    (function() {
+      try {
+        var lang = localStorage.getItem("vida_lang") || "en";
+        document.documentElement.lang = lang;
+        document.documentElement.dir  = lang === "ar" ? "rtl" : "ltr";
+      } catch (e) {}
+    })();
+  </script>
+  <title>Products — VIDA Office Furniture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+</head>
+<body data-page="products">
+
+  <section style="background: var(--vida-bone); padding: 56px 0 32px;">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../index.html"><span data-lang-en>Home</span><span data-lang-ar>الرئيسية</span></a>
+        <span>/</span>
+        <span data-lang-en>Products</span><span data-lang-ar>المنتجات</span>
+      </nav>
+      <h1 id="pageTitle"><span data-lang-en>All Products</span><span data-lang-ar>كل المنتجات</span></h1>
+      <p class="muted" id="pageDesc"><span data-lang-en>Explore our full catalogue of office, school, café, and stadium furniture.</span><span data-lang-ar>استعرض كاتالوجنا الكامل من أثاث المكاتب والمدارس والمقاهي والملاعب.</span></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="filter-bar" id="filterBar"></div>
+
+      <div style="display:flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        <div class="muted" id="resultCount"></div>
+        <div style="display:flex; align-items: center; gap: 8px;">
+          <label class="muted" style="font-size: .85rem;" for="sortBy"><span data-lang-en>Sort:</span><span data-lang-ar>ترتيب:</span></label>
+          <select id="sortBy" class="filter-chip" style="padding: 8px 14px; border: 1.5px solid var(--vida-line); border-radius: 999px;">
+            <option value="default" data-lang-en data-lang-ar="موصى به">Recommended</option>
+            <option value="price-asc">SAR ↑ / ر.س ↑</option>
+            <option value="price-desc">SAR ↓ / ر.س ↓</option>
+            <option value="name">A → Z</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid cols-4 cols-4-md" id="productsGrid"></div>
+
+      <div id="emptyMsg" style="display:none; text-align:center; padding: 64px 20px;">
+        <p class="muted"><span data-lang-en>No products match your filter.</span><span data-lang-ar>لا توجد منتجات تطابق الفلتر.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    function currentCat() {
+      const p = new URLSearchParams(location.search);
+      return p.get("cat") || "all";
+    }
+
+    function renderProducts() {
+      const cat = currentCat();
+      const sort = document.getElementById("sortBy").value;
+      let list = cat === "all" ? PRODUCTS.slice() : PRODUCTS.filter(p => p.category === cat);
+
+      if (sort === "price-asc")  list.sort((a,b)=>a.price-b.price);
+      else if (sort === "price-desc") list.sort((a,b)=>b.price-a.price);
+      else if (sort === "name")  list.sort((a,b)=>pickLang(a.name).localeCompare(pickLang(b.name)));
+
+      document.getElementById("productsGrid").innerHTML = list.map(productCardHTML).join("");
+      document.getElementById("emptyMsg").style.display = list.length ? "none" : "block";
+
+      const word = getLang()==="ar" ? "منتج" : "products";
+      document.getElementById("resultCount").textContent = `${list.length} ${word}`;
+
+      // Update page title from category
+      const titleEl = document.getElementById("pageTitle");
+      if (cat === "all") {
+        titleEl.innerHTML = '<span data-lang-en>All Products</span><span data-lang-ar>كل المنتجات</span>';
+      } else {
+        const c = CATEGORIES.find(x=>x.id===cat);
+        if (c) titleEl.innerHTML = `<span data-lang-en>${c.en}</span><span data-lang-ar>${c.ar}</span>`;
+      }
+      // Re-apply language visibility (DOM was replaced)
+      setLang(getLang());
+    }
+
+    function renderFilters() {
+      const cat = currentCat();
+      const chips = [
+        { id: "all", en: "All", ar: "الكل" },
+        ...CATEGORIES.map(c => ({ id: c.id, en: c.en, ar: c.ar }))
+      ];
+      const html = chips.map(c => `
+        <a href="?cat=${c.id}" class="filter-chip ${cat===c.id?'active':''}">
+          <span data-lang-en>${c.en}</span><span data-lang-ar>${c.ar}</span>
+        </a>`).join("");
+      document.getElementById("filterBar").innerHTML = html;
+    }
+
+    function init() {
+      renderFilters();
+      renderProducts();
+      document.getElementById("sortBy").addEventListener("change", renderProducts);
+    }
+    window.onLangChange = init;
+    document.addEventListener("DOMContentLoaded", () => setTimeout(init, 0));
+  </script>
+</body>
+</html>

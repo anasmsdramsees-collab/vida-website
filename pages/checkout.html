@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en" data-title-en="Checkout" data-title-ar="إتمام الطلب">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    /* Set lang/dir BEFORE first paint — prevents English flashing under Arabic */
+    (function() {
+      try {
+        var lang = localStorage.getItem("vida_lang") || "en";
+        document.documentElement.lang = lang;
+        document.documentElement.dir  = lang === "ar" ? "rtl" : "ltr";
+      } catch (e) {}
+    })();
+  </script>
+  <title>Checkout — VIDA Office Furniture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <style>
+    /* Payment-method UI */
+    .pm-list { display: grid; gap: 10px; }
+    .pm {
+      display: flex; gap: 14px; align-items: flex-start;
+      padding: 16px;
+      border: 1.5px solid var(--vida-line);
+      border-radius: var(--r);
+      background: #fff;
+      cursor: pointer;
+      transition: border-color .15s, background .15s;
+    }
+    .pm:hover { border-color: var(--vida-darker); }
+    .pm input { margin-top: 4px; accent-color: var(--vida-dark); }
+    .pm__body { flex: 1; min-width: 0; }
+    .pm__head { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:4px; }
+    .pm__name { font-weight: 700; color: var(--vida-darker); }
+    .pm__desc { font-size: .85rem; color: var(--text-soft); margin: 0; }
+    .pm--active { border-color: var(--vida-gold); background: #fffef8; }
+    .pm-form { margin-top: 8px; padding-inline-start: 32px; }
+
+    /* Stepper */
+    .steps { display:flex; gap:10px; margin-bottom: 32px; }
+    .step {
+      flex: 1; padding: 12px;
+      border: 1.5px solid var(--vida-line); border-radius: var(--r);
+      display:flex; align-items:center; gap:10px;
+      font-weight: 600; color: var(--text-mute);
+      background: #fff;
+    }
+    .step__num {
+      width:28px; height:28px; border-radius:50%;
+      background: var(--vida-line); color:#fff;
+      display:grid; place-items:center; font-size:.85rem;
+    }
+    .step--done    { border-color: var(--vida-dark); color: var(--vida-dark); }
+    .step--done .step__num { background: var(--vida-dark); }
+    .step--current { border-color: var(--vida-gold); color: var(--vida-darker); background: #fffef8; }
+    .step--current .step__num { background: var(--vida-gold); color: var(--vida-darker); }
+    @media (max-width: 600px) { .step span:last-child { display:none; } }
+  </style>
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+</head>
+<body data-page="checkout">
+
+  <section style="background: var(--vida-bone); padding: 56px 0 32px;">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../index.html"><span data-lang-en>Home</span><span data-lang-ar>الرئيسية</span></a>
+        <span>/</span>
+        <a href="cart.html"><span data-lang-en>Cart</span><span data-lang-ar>السلة</span></a>
+        <span>/</span>
+        <span data-lang-en>Checkout</span><span data-lang-ar>إتمام الطلب</span>
+      </nav>
+      <h1><span data-lang-en>Secure Checkout</span><span data-lang-ar>دفع آمن</span></h1>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div id="checkoutRoot"></div>
+    </div>
+  </section>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/payments-config.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/payments.js"></script>
+  <script>
+    let currentStep = 1; // 1 = details, 2 = payment
+    let orderDraft = null;
+
+    function render() {
+      const cart = getCart();
+      const root = document.getElementById("checkoutRoot");
+      const lang = getLang();
+
+      if (cart.length === 0) {
+        root.innerHTML = `
+          <div class="cart-empty">
+            <h2>${lang==="ar"?"السلة فارغة":"Your cart is empty"}</h2>
+            <p class="muted">${lang==="ar"?"أضف منتجات قبل ما تتم الطلب.":"Add products before checking out."}</p>
+            <a href="products.html" class="btn btn--primary">${lang==="ar"?"تسوّق الآن":"Shop now"}</a>
+          </div>`;
+        return;
+      }
+
+      const t = cartTotals();
+      const stepsHTML = `
+        <div class="steps">
+          <div class="step ${currentStep>=1?(currentStep===1?'step--current':'step--done'):''}">
+            <span class="step__num">1</span><span>${lang==="ar"?"تفاصيل التسليم":"Delivery Details"}</span>
+          </div>
+          <div class="step ${currentStep>=2?(currentStep===2?'step--current':'step--done'):''}">
+            <span class="step__num">2</span><span>${lang==="ar"?"الدفع":"Payment"}</span>
+          </div>
+          <div class="step ${currentStep>=3?'step--current':''}">
+            <span class="step__num">3</span><span>${lang==="ar"?"التأكيد":"Confirmation"}</span>
+          </div>
+        </div>`;
+
+      const summaryHTML = renderSummary(cart, t, lang);
+      const mainHTML = currentStep === 1
+        ? renderDetailsForm(lang, t)
+        : renderPaymentStep(lang, t);
+
+      root.innerHTML = `
+        <div class="cart-layout">
+          <div>
+            ${stepsHTML}
+            ${mainHTML}
+          </div>
+          <aside class="cart-summary">
+            ${summaryHTML}
+          </aside>
+        </div>
+      `;
+
+      if (currentStep === 1) wireDetailsForm();
+      else                   wirePaymentStep();
+
+      setLang(lang);
+    }
+
+    function renderSummary(cart, t, lang) {
+      const items = cart.map(item => {
+        const p = PRODUCTS.find(x => x.id === item.id);
+        if (!p) return "";
+        return `
+          <div style="display:flex; gap:12px; padding: 10px 0; border-bottom:1px solid var(--vida-line);">
+            <div style="width:54px;height:54px;border-radius:var(--r-sm);overflow:hidden;background:var(--vida-bone);flex-shrink:0;">
+              <img src="../${p.image}" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-weight:600; color:var(--vida-darker); font-size:.92rem;">${pickLang(p.name)}</div>
+              <div class="muted" style="font-size: .78rem;">${item.qty} × ${fmtPrice(p.price)}</div>
+            </div>
+            <div style="font-weight:700; color:var(--vida-dark); white-space:nowrap; font-size:.9rem;">${fmtPrice(p.price*item.qty)}</div>
+          </div>`;
+      }).join("");
+
+      return `
+        <h3>${lang==="ar"?"ملخص الطلب":"Order Summary"}</h3>
+        ${items}
+        <div style="padding-top: 12px;">
+          <div class="cart-summary__row"><span>${lang==="ar"?"المجموع الفرعي":"Subtotal"}</span><strong>${fmtPrice(t.subtotal)}</strong></div>
+          <div class="cart-summary__row"><span>${lang==="ar"?"التوصيل":"Shipping"}</span><strong>${t.shipping===0?(lang==="ar"?"مجاني":"Free"):fmtPrice(t.shipping)}</strong></div>
+          <div class="cart-summary__row"><span>${lang==="ar"?"ضريبة القيمة المضافة (15%)":"VAT (15%)"}</span><strong>${fmtPrice(t.vat)}</strong></div>
+          <div class="cart-summary__row cart-summary__row--total"><span>${lang==="ar"?"الإجمالي":"Total"}</span><strong>${fmtPrice(t.total)}</strong></div>
+        </div>
+        <div style="margin-top: 16px; padding: 12px; background:#fff; border-radius:var(--r-sm); font-size:.78rem; color:var(--text-mute); display:flex; align-items:center; gap:8px;">
+          <svg style="width:16px;height:16px;color:var(--vida-dark);flex-shrink:0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+          <span>${lang==="ar"?"معاملات آمنة عبر بوابات معتمدة (SAMA & PCI-DSS)":"Secure checkout via licensed gateways (SAMA & PCI-DSS)"}</span>
+        </div>`;
+    }
+
+    function renderDetailsForm(lang, t) {
+      return `
+      <form id="detailsForm" class="form-grid" style="background:#fff; padding: 28px; border-radius: var(--r-lg); border:1px solid var(--vida-line);">
+        <h3 style="margin-top:0;">${lang==="ar"?"معلومات الاتصال":"Contact Information"}</h3>
+        <div class="form-row">
+          <div class="field">
+            <label>${lang==="ar"?"الاسم الكامل":"Full Name"} *</label>
+            <input type="text" name="name" required>
+          </div>
+          <div class="field">
+            <label>${lang==="ar"?"رقم الجوال":"Mobile"} *</label>
+            <input type="tel" name="phone" pattern="^(05|966|\\+966)[0-9]{8,9}$" placeholder="05XXXXXXXX" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>${lang==="ar"?"البريد الإلكتروني":"Email"} *</label>
+            <input type="email" name="email" required>
+          </div>
+          <div class="field">
+            <label>${lang==="ar"?"الشركة (اختياري)":"Company (optional)"}</label>
+            <input type="text" name="company">
+          </div>
+        </div>
+
+        <h3 style="margin-top: 12px;">${lang==="ar"?"عنوان التسليم":"Delivery Address"}</h3>
+        <div class="form-row">
+          <div class="field">
+            <label>${lang==="ar"?"المدينة":"City"} *</label>
+            <select name="city" required>
+              <option value="">${lang==="ar"?"اختر مدينة":"Select a city"}</option>
+              <option>${lang==="ar"?"الرياض":"Riyadh"}</option>
+              <option>${lang==="ar"?"جدة":"Jeddah"}</option>
+              <option>${lang==="ar"?"الدمام":"Dammam"}</option>
+              <option>${lang==="ar"?"مكة المكرمة":"Makkah"}</option>
+              <option>${lang==="ar"?"المدينة المنورة":"Madinah"}</option>
+              <option>${lang==="ar"?"الخبر":"Khobar"}</option>
+              <option>${lang==="ar"?"الطائف":"Taif"}</option>
+              <option>${lang==="ar"?"أبها":"Abha"}</option>
+              <option>${lang==="ar"?"تبوك":"Tabuk"}</option>
+              <option>${lang==="ar"?"حائل":"Hail"}</option>
+              <option>${lang==="ar"?"بريدة":"Buraidah"}</option>
+              <option>${lang==="ar"?"الجبيل":"Jubail"}</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>${lang==="ar"?"الحي":"District"} *</label>
+            <input type="text" name="district" required>
+          </div>
+        </div>
+        <div class="field">
+          <label>${lang==="ar"?"الشارع":"Street Address"} *</label>
+          <input type="text" name="street" required>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>${lang==="ar"?"الرمز البريدي":"Postal Code"}</label>
+            <input type="text" name="zip">
+          </div>
+          <div class="field">
+            <label>${lang==="ar"?"ملاحظات التسليم":"Delivery Notes"}</label>
+            <input type="text" name="notes" placeholder="${lang==="ar"?"الدور، رقم المكتب…":"Floor, office number…"}">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn--primary" style="margin-top: 16px; justify-content: center;">
+          ${lang==="ar"?"المتابعة للدفع →":"Continue to Payment →"}
+        </button>
+      </form>`;
+    }
+
+    function wireDetailsForm() {
+      document.getElementById("detailsForm").addEventListener("submit", e => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const data = Object.fromEntries(fd.entries());
+        const cart = getCart();
+        const t = cartTotals();
+
+        orderDraft = {
+          id: "VD-" + Date.now().toString(36).toUpperCase(),
+          customer: {
+            name: data.name, phone: data.phone, email: data.email,
+            company: data.company,
+            address: `${data.street}, ${data.district}, ${data.city} ${data.zip||""}`.trim(),
+            notes: data.notes,
+          },
+          items: cart.map(it => {
+            const p = PRODUCTS.find(x => x.id === it.id);
+            return { id: p.id, name: p.name, qty: it.qty, price: p.price, line_total: p.price * it.qty };
+          }),
+          subtotal: t.subtotal,
+          shipping: t.shipping,
+          vat: t.vat,
+          total: t.total,
+        };
+
+        currentStep = 2;
+        render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    function renderPaymentStep(lang, t) {
+      const methods = Payments.availableMethods(t.total);
+      const optionsHTML = methods.map((m, i) => `
+        <label class="pm ${i===0?'pm--active':''}" data-method="${m.id}">
+          <input type="radio" name="payment_method" value="${m.id}" ${i===0?'checked':''}>
+          <div class="pm__body">
+            <div class="pm__head">
+              ${Payments.badgeHTML(m.badge)}
+              <span class="pm__name">${lang==="ar"?m.name_ar:m.name_en}</span>
+            </div>
+            <p class="pm__desc">${lang==="ar"?m.desc_ar:m.desc_en}</p>
+          </div>
+        </label>
+      `).join("");
+
+      return `
+        <div style="background:#fff; padding: 28px; border-radius: var(--r-lg); border:1px solid var(--vida-line);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+            <h3 style="margin:0;">${lang==="ar"?"اختر طريقة الدفع":"Choose Payment Method"}</h3>
+            <button type="button" id="backBtn" class="btn btn--ghost btn--sm">
+              ${lang==="ar"?"← رجوع":"← Back"}
+            </button>
+          </div>
+
+          <div class="pm-list" id="pmList">${optionsHTML}</div>
+
+          <div id="pmForm" class="pm-form" style="margin-top: 20px;"></div>
+        </div>`;
+    }
+
+    function wirePaymentStep() {
+      document.getElementById("backBtn").addEventListener("click", () => {
+        currentStep = 1; render();
+      });
+
+      const list = document.getElementById("pmList");
+      const formContainer = document.getElementById("pmForm");
+
+      function showFormFor(method) {
+        list.querySelectorAll(".pm").forEach(el => {
+          el.classList.toggle("pm--active", el.dataset.method === method);
+        });
+        if (method === "moyasar")  Payments.renderMoyasar(formContainer, orderDraft);
+        if (method === "tabby")    Payments.renderTabby(formContainer, orderDraft);
+        if (method === "tamara")   Payments.renderTamara(formContainer, orderDraft);
+        if (method === "cod")      Payments.renderCOD(formContainer, orderDraft);
+        if (method === "bank")     Payments.renderBank(formContainer, orderDraft);
+        if (method === "invoice")  Payments.renderInvoice(formContainer, orderDraft);
+      }
+
+      list.querySelectorAll('input[name="payment_method"]').forEach(input => {
+        input.addEventListener("change", e => showFormFor(e.target.value));
+      });
+      // Initial
+      const first = list.querySelector('input[name="payment_method"]:checked');
+      if (first) showFormFor(first.value);
+    }
+
+    window.onLangChange = render;
+    document.addEventListener("DOMContentLoaded", () => setTimeout(render, 0));
+  </script>
+</body>
+</html>

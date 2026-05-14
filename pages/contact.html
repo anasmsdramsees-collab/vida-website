@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en" data-title-en="Contact" data-title-ar="تواصل معنا">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    /* Set lang/dir BEFORE first paint — prevents English flashing under Arabic */
+    (function() {
+      try {
+        var lang = localStorage.getItem("vida_lang") || "en";
+        document.documentElement.lang = lang;
+        document.documentElement.dir  = lang === "ar" ? "rtl" : "ltr";
+      } catch (e) {}
+    })();
+  </script>
+  <title>Contact — VIDA Office Furniture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+</head>
+<body data-page="contact">
+
+  <section style="background: var(--vida-bone); padding: 56px 0 32px;">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="../index.html"><span data-lang-en>Home</span><span data-lang-ar>الرئيسية</span></a>
+        <span>/</span>
+        <span data-lang-en>Contact</span><span data-lang-ar>تواصل</span>
+      </nav>
+      <h1><span data-lang-en>Let's talk</span><span data-lang-ar>هيا نتحدث</span></h1>
+      <p class="muted" style="max-width: 600px;">
+        <span data-lang-en>Visit our showroom, send us a message, or book a free design consultation. Our team responds within 24 hours.</span>
+        <span data-lang-ar>زُر معرضنا، أرسل رسالة، أو احجز استشارة تصميم مجانية. فريقنا يرد خلال 24 ساعة.</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid cols-3 cols-3-md">
+        <div class="value-card" id="showroom">
+          <div class="value-card__icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <h3><span data-lang-en>Visit Showroom</span><span data-lang-ar>زُر المعرض</span></h3>
+          <p>
+            <span data-lang-en>Riyadh — Abu Bakr Al-Siddiq Street<br>Sunday – Thursday · 9:00 AM – 9:00 PM<br>Saturday · 4:00 PM – 9:00 PM</span>
+            <span data-lang-ar>الرياض — شارع أبو بكر الصديق<br>الأحد – الخميس · 9:00 ص – 9:00 م<br>السبت · 4:00 م – 9:00 م</span>
+          </p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          </div>
+          <h3><span data-lang-en>Call Us</span><span data-lang-ar>اتصل بنا</span></h3>
+          <p>
+            <a href="tel:+966550881411" style="color:var(--vida-dark); font-weight:600; font-size:1.1rem;">0550881411</a><br>
+            <span class="muted" data-lang-en>Sales · Support · Quotes</span>
+            <span class="muted" data-lang-ar>المبيعات · الدعم · عروض الأسعار</span>
+          </p>
+        </div>
+
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <h3><span data-lang-en>Email</span><span data-lang-ar>البريد الإلكتروني</span></h3>
+          <p>
+            <a href="mailto:info@vidaaloula.com" style="color:var(--vida-dark); font-weight:600;">info@vidaaloula.com</a><br>
+            <span class="muted" data-lang-en>For general & corporate inquiries</span>
+            <span class="muted" data-lang-ar>للاستفسارات العامة والشركات</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--vida-bone); padding-top: 0;">
+    <div class="container">
+      <div class="cart-layout" id="quote">
+        <div>
+          <span class="eyebrow"><span data-lang-en>Get in Touch</span><span data-lang-ar>راسلنا</span></span>
+          <h2><span data-lang-en>Send us a message or request a quote</span><span data-lang-ar>أرسل لنا رسالة أو اطلب عرض سعر</span></h2>
+          <p class="muted"><span data-lang-en>Tell us about your project — office size, number of seats, preferred finishes, timeline. We'll come back with a tailored proposal.</span><span data-lang-ar>احكي لنا عن مشروعك — حجم المكتب، عدد المقاعد، اللمسات المفضلة، الجدول الزمني. هنرجع لك بعرض مخصص.</span></p>
+
+          <form id="contactForm" class="form-grid" style="background:#fff; padding:32px; border-radius: var(--r-lg); margin-top: 20px; box-shadow: var(--shadow-sm);">
+            <div class="form-row">
+              <div class="field">
+                <label data-lang-en>Full Name *</label>
+                <label data-lang-ar>الاسم الكامل *</label>
+                <input type="text" name="name" required>
+              </div>
+              <div class="field">
+                <label data-lang-en>Mobile *</label>
+                <label data-lang-ar>الجوال *</label>
+                <input type="tel" name="phone" required placeholder="05XXXXXXXX">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label data-lang-en>Email</label>
+                <label data-lang-ar>البريد الإلكتروني</label>
+                <input type="email" name="email">
+              </div>
+              <div class="field">
+                <label data-lang-en>Company</label>
+                <label data-lang-ar>الشركة</label>
+                <input type="text" name="company">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label data-lang-en>Inquiry Type</label>
+                <label data-lang-ar>نوع الاستفسار</label>
+                <select name="type">
+                  <option data-lang-en>General Inquiry</option>
+                  <option data-lang-ar>استفسار عام</option>
+                  <option data-lang-en>Request a Quote</option>
+                  <option data-lang-ar>طلب عرض سعر</option>
+                  <option data-lang-en>Project Consultation</option>
+                  <option data-lang-ar>استشارة مشروع</option>
+                  <option data-lang-en>After-sales Support</option>
+                  <option data-lang-ar>دعم ما بعد البيع</option>
+                  <option data-lang-en>Partnership</option>
+                  <option data-lang-ar>شراكة</option>
+                </select>
+              </div>
+              <div class="field">
+                <label data-lang-en>Approximate Budget (SAR)</label>
+                <label data-lang-ar>الميزانية التقريبية (ر.س)</label>
+                <select name="budget">
+                  <option value="">—</option>
+                  <option>&lt; 10,000</option>
+                  <option>10,000 – 50,000</option>
+                  <option>50,000 – 200,000</option>
+                  <option>200,000 – 500,000</option>
+                  <option>&gt; 500,000</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label data-lang-en>Message *</label>
+              <label data-lang-ar>الرسالة *</label>
+              <textarea name="message" required placeholder=""></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary" style="justify-content:center;">
+              <span data-lang-en>Send Message</span><span data-lang-ar>إرسال الرسالة</span>
+            </button>
+            <p id="formStatus" class="muted" style="font-size:.85rem;margin:0;"></p>
+          </form>
+        </div>
+
+        <aside style="position:sticky; top: 96px; height: fit-content;">
+          <div style="background: var(--vida-darker); color: #fff; border-radius: var(--r-lg); padding: 28px;">
+            <h3 style="color: var(--vida-gold)"><span data-lang-en>Prefer to chat?</span><span data-lang-ar>تفضل المحادثة؟</span></h3>
+            <p style="color: rgba(255,255,255,.85)"><span data-lang-en>WhatsApp is the fastest way to reach us — we usually reply within minutes during business hours.</span><span data-lang-ar>واتساب هو أسرع طريقة للوصول إلينا — نرد عادةً خلال دقائق في ساعات العمل.</span></p>
+            <a href="https://wa.me/966550881411" target="_blank" class="btn btn--gold" style="width:100%; justify-content: center; margin-top: 12px;">
+              <svg style="width:18px;height:18px" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24z"/></svg>
+              <span data-lang-en>Open WhatsApp</span><span data-lang-ar>فتح واتساب</span>
+            </a>
+          </div>
+
+          <div style="background:#fff; border:1px solid var(--vida-line); border-radius: var(--r-lg); padding: 28px; margin-top: 16px;">
+            <h4><span data-lang-en>Working Hours</span><span data-lang-ar>ساعات العمل</span></h4>
+            <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--vida-line);">
+              <span data-lang-en>Sun – Thu</span><span data-lang-ar>الأحد – الخميس</span>
+              <strong>9:00 – 21:00</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid var(--vida-line);">
+              <span data-lang-en>Saturday</span><span data-lang-ar>السبت</span>
+              <strong>16:00 – 21:00</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; padding:6px 0;">
+              <span data-lang-en>Friday</span><span data-lang-ar>الجمعة</span>
+              <strong data-lang-en>Closed</strong>
+              <strong data-lang-ar>مغلق</strong>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section class="section section--tight">
+    <div class="container">
+      <div style="background:var(--vida-darker); color:#fff; border-radius: var(--r-lg); overflow:hidden;">
+        <div style="display:grid; grid-template-columns: 1fr 1.4fr; gap:0;" id="mapWrap">
+          <div style="padding: 40px;">
+            <span class="eyebrow"><span data-lang-en>Showroom</span><span data-lang-ar>المعرض</span></span>
+            <h2 style="color:#fff"><span data-lang-en>Find Us in Riyadh</span><span data-lang-ar>زُرنا في الرياض</span></h2>
+            <p style="color:#c9d1ce">
+              <strong style="color:var(--vida-gold);font-size:1.1rem;">VIDA Office Furniture</strong><br>
+              <span data-lang-en>Abu Bakr Al-Siddiq Street<br>Riyadh, Saudi Arabia</span>
+              <span data-lang-ar>شارع أبو بكر الصديق<br>الرياض، المملكة العربية السعودية</span>
+            </p>
+            <a href="https://www.google.com/maps/search/?api=1&query=Abu+Bakr+Al-Siddiq+Street+Riyadh" target="_blank" class="btn btn--gold">
+              <span data-lang-en>Get Directions</span><span data-lang-ar>الاتجاهات</span>
+            </a>
+          </div>
+          <iframe
+            src="https://www.google.com/maps?q=Abu+Bakr+Al-Siddiq+Street,+Riyadh&output=embed"
+            style="border:0; min-height: 360px; width: 100%;"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const data = Object.fromEntries(fd.entries());
+      const lang = getLang();
+
+      // Save locally (could integrate with backend later)
+      const messages = JSON.parse(localStorage.getItem("vida_messages") || "[]");
+      messages.push({ at: new Date().toISOString(), ...data });
+      localStorage.setItem("vida_messages", JSON.stringify(messages));
+
+      // WhatsApp deep link
+      const text = [
+        `*${lang==="ar"?"رسالة جديدة من vidaaloula.com":"New message from vidaaloula.com"}*`,
+        ``,
+        `${data.name} ${data.company?`(${data.company})`:""}`,
+        `📞 ${data.phone}`,
+        `${data.email ? "✉️ " + data.email : ""}`,
+        ``,
+        `${lang==="ar"?"نوع الاستفسار":"Type"}: ${data.type || "—"}`,
+        `${lang==="ar"?"الميزانية":"Budget"}: ${data.budget || "—"}`,
+        ``,
+        `${lang==="ar"?"الرسالة":"Message"}:`,
+        data.message
+      ].filter(Boolean).join("\n");
+      const wa = `https://wa.me/${VIDA.whatsapp}?text=${encodeURIComponent(text)}`;
+
+      const status = document.getElementById("formStatus");
+      status.textContent = lang==="ar" ? "✓ تم الإرسال! بنفتحلك واتساب لتأكيد الإرسال…" : "✓ Sent! Opening WhatsApp to confirm…";
+      status.style.color = "var(--vida-dark)";
+
+      window.open(wa, "_blank");
+      e.target.reset();
+    });
+
+    // Responsive map layout
+    function adjustMap() {
+      const wrap = document.getElementById("mapWrap");
+      if (wrap && window.innerWidth < 800) wrap.style.gridTemplateColumns = "1fr";
+      else if (wrap) wrap.style.gridTemplateColumns = "1fr 1.4fr";
+    }
+    window.addEventListener("resize", adjustMap);
+    document.addEventListener("DOMContentLoaded", adjustMap);
+  </script>
+</body>
+</html>

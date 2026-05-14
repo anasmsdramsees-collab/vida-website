@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" data-title-en="Product" data-title-ar="منتج">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    /* Set lang/dir BEFORE first paint — prevents English flashing under Arabic */
+    (function() {
+      try {
+        var lang = localStorage.getItem("vida_lang") || "en";
+        document.documentElement.lang = lang;
+        document.documentElement.dir  = lang === "ar" ? "rtl" : "ltr";
+      } catch (e) {}
+    })();
+  </script>
+  <title>Product — VIDA Office Furniture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+</head>
+<body data-page="products">
+
+  <section class="container">
+    <nav class="breadcrumb">
+      <a href="../index.html"><span data-lang-en>Home</span><span data-lang-ar>الرئيسية</span></a>
+      <span>/</span>
+      <a href="products.html"><span data-lang-en>Products</span><span data-lang-ar>المنتجات</span></a>
+      <span>/</span>
+      <span id="bcName"></span>
+    </nav>
+  </section>
+
+  <section class="container">
+    <div class="pd" id="productDetail">
+      <!-- filled by JS -->
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2><span data-lang-en>You may also like</span><span data-lang-ar>قد يعجبك أيضاً</span></h2>
+      </div>
+      <div class="grid cols-4 cols-4-md" id="relatedGrid"></div>
+    </div>
+  </section>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/payments-config.js"></script>
+  <script src="../js/main.js"></script>
+  <script src="../js/payments.js"></script>
+  <script>
+    function getProduct() {
+      const id = new URLSearchParams(location.search).get("id");
+      return PRODUCTS.find(p => p.id === id);
+    }
+
+    function render() {
+      const p = getProduct();
+      const root = document.getElementById("productDetail");
+      if (!p) {
+        root.innerHTML = `<div style="text-align:center;padding:60px;"><p class="muted">${getLang()==="ar"?"المنتج غير موجود":"Product not found."}</p><a href="products.html" class="btn btn--primary">${getLang()==="ar"?"عودة للمنتجات":"Back to products"}</a></div>`;
+        return;
+      }
+
+      const fullImg = "../" + (p.gallery && p.gallery[0] || p.image);
+      const gallery = (p.gallery || [p.image]).map((src, idx) => `
+        <div class="pd__thumb ${idx===0?'active':''}" data-src="../${src}">
+          <img src="../${src}" alt="">
+        </div>`).join("");
+
+      const specsHTML = Object.entries(p.specs || {}).map(([k,v]) => {
+        const labels = {
+          dimensions: { en: "Dimensions", ar: "الأبعاد" },
+          persons: { en: "Workstations", ar: "محطات العمل" },
+          finish: { en: "Finish", ar: "اللمسة النهائية" },
+          weight_capacity: { en: "Weight Capacity", ar: "السعة الوزنية" },
+          drawers: { en: "Drawers", ar: "الأدراج" },
+          capacity: { en: "Capacity", ar: "السعة" },
+          mounting: { en: "Mounting", ar: "التثبيت" },
+          pieces: { en: "Set Includes", ar: "المجموعة تتضمن" },
+        };
+        const label = labels[k] ? pickLang(labels[k]) : k;
+        return `<div class="pd__spec-row"><span>${label}</span><span>${v}</span></div>`;
+      }).join("");
+
+      root.innerHTML = `
+        <div>
+          <div class="pd__gallery"><img id="mainImg" src="${fullImg}" alt="${pickLang(p.name)}"></div>
+          <div class="pd__thumbs">${gallery}</div>
+        </div>
+        <div>
+          <div class="pd__series">${pickLang(p.series)}</div>
+          <h1>${pickLang(p.name)}</h1>
+          <div class="pd__sku">${getLang()==="ar"?"رمز المنتج":"SKU"}: <strong>${p.id}</strong></div>
+          <p>${pickLang(p.desc)}</p>
+          <div class="pd__price">${fmtPrice(p.price)} <small>${getLang()==="ar"?"شامل ضريبة القيمة المضافة":"VAT included"}</small></div>
+
+          <div id="bnplBadges" style="display:flex; gap:8px; flex-wrap:wrap; margin-top: 6px;"></div>
+
+          <div class="pd__actions">
+            <div class="pd__qty">
+              <button id="qtyMinus" aria-label="-">−</button>
+              <input type="number" id="qtyInput" value="1" min="1">
+              <button id="qtyPlus" aria-label="+">+</button>
+            </div>
+            <button class="btn btn--primary" id="addBtn">
+              <svg style="width:18px;height:18px" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              <span data-lang-en>Add to Cart</span><span data-lang-ar>أضف للسلة</span>
+            </button>
+            <a class="btn btn--gold" href="https://wa.me/${VIDA.whatsapp}?text=${encodeURIComponent('I am interested in ' + p.id + ' — ' + p.name.en)}">
+              <span data-lang-en>Quote on WhatsApp</span><span data-lang-ar>عرض سعر واتساب</span>
+            </a>
+          </div>
+
+          <div class="pd__specs">
+            <h3 style="margin-bottom: 4px;"><span data-lang-en>Specifications</span><span data-lang-ar>المواصفات</span></h3>
+            ${specsHTML}
+            <div class="pd__spec-row"><span><span data-lang-en>Collection</span><span data-lang-ar>المجموعة</span></span><span>${pickLang(p.series)}</span></div>
+          </div>
+
+          <div style="background: var(--vida-bone); border-radius: var(--r-lg); padding: 20px; margin-top: 24px; display: flex; gap: 16px; align-items: center;">
+            <svg style="width:32px;height:32px;color:var(--vida-gold);flex-shrink:0;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+            <div>
+              <strong><span data-lang-en>Free Delivery in Riyadh</span><span data-lang-ar>توصيل مجاني داخل الرياض</span></strong>
+              <p style="margin:0;font-size:.85rem;"><span data-lang-en>For orders above SAR 5,000. Nationwide shipping available.</span><span data-lang-ar>للطلبات فوق 5,000 ر.س. التوصيل متاح لجميع مناطق المملكة.</span></p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Wire up interactions
+      document.getElementById("addBtn").addEventListener("click", () => {
+        const qty = Math.max(1, parseInt(document.getElementById("qtyInput").value || 1));
+        addToCart(p.id, qty);
+      });
+      document.getElementById("qtyMinus").addEventListener("click", () => {
+        const inp = document.getElementById("qtyInput");
+        inp.value = Math.max(1, parseInt(inp.value || 1) - 1);
+      });
+      document.getElementById("qtyPlus").addEventListener("click", () => {
+        const inp = document.getElementById("qtyInput");
+        inp.value = parseInt(inp.value || 1) + 1;
+      });
+      document.querySelectorAll(".pd__thumb").forEach(t => {
+        t.addEventListener("click", () => {
+          document.querySelectorAll(".pd__thumb").forEach(x => x.classList.remove("active"));
+          t.classList.add("active");
+          document.getElementById("mainImg").src = t.getAttribute("data-src");
+        });
+      });
+
+      // BNPL badges (Tabby / Tamara)
+      const lang = getLang();
+      const bnplEl = document.getElementById("bnplBadges");
+      const bnpls = [];
+      if (PAYMENTS.tabby.enabled && p.price >= PAYMENTS.tabby.min_amount && p.price <= PAYMENTS.tabby.max_amount) {
+        const perPay = Math.round(p.price / PAYMENTS.tabby.installments).toLocaleString();
+        bnpls.push(`
+          <div style="display:flex; align-items:center; gap:8px; padding:8px 12px; background:#F1FFF8; border:1px solid #3BFFC1; border-radius:var(--r-sm); font-size:.85rem;">
+            <span style="background:#3BFFC1; color:#000; font-weight:800; padding:2px 8px; border-radius:4px; font-size:.7rem;">tabby</span>
+            <span>${lang==="ar"?`أو ${PAYMENTS.tabby.installments} دفعات × ${perPay} ${lang==="ar"?"ر.س":"SAR"} — بدون فوائد`:`Or ${PAYMENTS.tabby.installments} × ${perPay} SAR — interest-free`}</span>
+          </div>`);
+      }
+      if (PAYMENTS.tamara.enabled && p.price >= PAYMENTS.tamara.min_amount && p.price <= PAYMENTS.tamara.max_amount) {
+        const perPay = Math.round(p.price / PAYMENTS.tamara.installments).toLocaleString();
+        bnpls.push(`
+          <div style="display:flex; align-items:center; gap:8px; padding:8px 12px; background:#FFFCEC; border:1px solid #FFD200; border-radius:var(--r-sm); font-size:.85rem;">
+            <span style="background:#FFD200; color:#000; font-weight:800; padding:2px 8px; border-radius:4px; font-size:.7rem;">tamara</span>
+            <span>${lang==="ar"?`أو ${PAYMENTS.tamara.installments} دفعات × ${perPay} ${lang==="ar"?"ر.س":"SAR"} — متوافق مع الشريعة`:`Or ${PAYMENTS.tamara.installments} × ${perPay} SAR — Sharia-compliant`}</span>
+          </div>`);
+      }
+      bnplEl.innerHTML = bnpls.join("");
+
+      // Update breadcrumb name
+      document.getElementById("bcName").textContent = pickLang(p.name);
+      document.title = pickLang(p.name) + " — VIDA";
+
+      // Related
+      const related = PRODUCTS.filter(x => x.category === p.category && x.id !== p.id).slice(0, 4);
+      document.getElementById("relatedGrid").innerHTML = related.map(productCardHTML).join("");
+
+      setLang(getLang());
+    }
+
+    window.onLangChange = render;
+    document.addEventListener("DOMContentLoaded", () => setTimeout(render, 0));
+  </script>
+</body>
+</html>

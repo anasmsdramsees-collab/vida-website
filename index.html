@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" data-title-en="Modern Office Furniture" data-title-ar="أثاث مكتبي عصري">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    /* Set lang/dir BEFORE first paint — prevents English flashing under Arabic */
+    (function() {
+      try {
+        var lang = localStorage.getItem("vida_lang") || "en";
+        document.documentElement.lang = lang;
+        document.documentElement.dir  = lang === "ar" ? "rtl" : "ltr";
+      } catch (e) {}
+    })();
+  </script>
+  <title>VIDA Office Furniture — Modern, Elegant Workspaces in Riyadh</title>
+  <meta name="description" content="VIDA Office Furniture — Premium office furniture, workstations, executive desks, chairs, and complete office solutions in Riyadh, Saudi Arabia.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" href="favicon.ico" sizes="any">
+</head>
+<body data-page="home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__media" style="background-image:url('images/pages/prof_p05.jpg')"></div>
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <span class="eyebrow" style="color: var(--vida-gold)">
+        <span data-lang-en>VIDA Office Furniture · Est. Riyadh</span>
+        <span data-lang-ar>فيدا الأولى · الرياض</span>
+      </span>
+      <h1>
+        <span data-lang-en>Workspaces that <span>inspire</span> productivity.</span>
+        <span data-lang-ar>مساحات عمل <span>تُلهم</span> الإنتاجية.</span>
+      </h1>
+      <p>
+        <span data-lang-en>Modern, elegant office furniture crafted for the way you work. From executive suites to coworking benches — Vida brings a magical touch to every workspace.</span>
+        <span data-lang-ar>أثاث مكتبي عصري وأنيق مصمم لطريقة عملك. من الأجنحة التنفيذية إلى مكاتب العمل المشترك — فيدا تضيف لمسة سحرية لكل بيئة عمل.</span>
+      </p>
+      <div class="hero__actions">
+        <a href="pages/products.html" class="btn btn--gold">
+          <span data-lang-en>Shop Collection</span><span data-lang-ar>تسوّق المجموعة</span>
+        </a>
+        <a href="pages/contact.html" class="btn btn--light">
+          <span data-lang-en>Visit Showroom</span><span data-lang-ar>زُر المعرض</span>
+        </a>
+      </div>
+    </div>
+    <div class="hero__scroll" data-lang-en>SCROLL</div>
+    <div class="hero__scroll" data-lang-ar>اسحب للأسفل</div>
+  </section>
+
+  <!-- STATS -->
+  <section class="section section--tight" style="background: var(--vida-bone)">
+    <div class="container">
+      <div class="grid cols-4 cols-4-md">
+        <div class="stat"><div class="stat__num">9<span>+</span></div><div class="stat__label" data-lang-en>Categories</div><div class="stat__label" data-lang-ar>فئات منتجات</div></div>
+        <div class="stat"><div class="stat__num">200<span>+</span></div><div class="stat__label" data-lang-en>Designs</div><div class="stat__label" data-lang-ar>تصميمات</div></div>
+        <div class="stat"><div class="stat__num">12<span>+</span></div><div class="stat__label" data-lang-en>Years in Riyadh</div><div class="stat__label" data-lang-ar>سنة في الرياض</div></div>
+        <div class="stat"><div class="stat__num">100<span>%</span></div><div class="stat__label" data-lang-en>Custom-fit Service</div><div class="stat__label" data-lang-ar>خدمة مخصصة</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow"><span data-lang-en>Explore</span><span data-lang-ar>تصفّح</span></span>
+        <h2><span data-lang-en>Our Collections</span><span data-lang-ar>مجموعاتنا</span></h2>
+        <p><span data-lang-en>From boardrooms to classrooms, every space tells a story. Find the perfect chapter for yours.</span><span data-lang-ar>من قاعات المجالس إلى الفصول المدرسية، كل مساحة تحكي قصة. اعثر على الفصل المناسب لقصتك.</span></p>
+      </div>
+      <div class="grid cols-3 cols-3-md" id="categoriesGrid"></div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="section" style="background: #fbfaf6">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow"><span data-lang-en>Bestsellers</span><span data-lang-ar>الأكثر مبيعاً</span></span>
+        <h2><span data-lang-en>Featured Pieces</span><span data-lang-ar>قطع مختارة</span></h2>
+      </div>
+      <div class="grid cols-4 cols-4-md" id="featuredGrid"></div>
+      <div style="text-align:center; margin-top: 40px;">
+        <a href="pages/products.html" class="btn btn--ghost">
+          <span data-lang-en>View All Products →</span><span data-lang-ar>عرض كل المنتجات ←</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE PROPS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow"><span data-lang-en>Why Vida</span><span data-lang-ar>لماذا فيدا</span></span>
+        <h2><span data-lang-en>Crafted with care, delivered with pride</span><span data-lang-ar>صناعة بعناية، تسليم بفخر</span></h2>
+      </div>
+      <div class="grid cols-3 cols-3-md">
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <h3><span data-lang-en>Quality & Care</span><span data-lang-ar>الجودة والإعتناء</span></h3>
+          <p><span data-lang-en>Every piece is selected and crafted to high quality standards — built to last in busy work environments.</span><span data-lang-ar>كل قطعة مختارة ومصنوعة وفق أعلى معايير الجودة — مصممة لتدوم في بيئات العمل المزدحمة.</span></p>
+        </div>
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+          </div>
+          <h3><span data-lang-en>Exceptional Service</span><span data-lang-ar>خدمة مميزة</span></h3>
+          <p><span data-lang-en>Our team listens, designs, delivers, and installs. From the first sketch to the final placement.</span><span data-lang-ar>فريقنا يستمع ويصمم ويوصّل ويُثبّت. من أول رسمة إلى آخر قطعة في مكانها.</span></p>
+        </div>
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          </div>
+          <h3><span data-lang-en>Riyadh Showroom</span><span data-lang-ar>معرض الرياض</span></h3>
+          <p><span data-lang-en>Visit our Abu Bakr Al-Siddiq Street showroom to experience the textures, finishes, and ergonomics in person.</span><span data-lang-ar>زُر معرضنا في شارع أبو بكر الصديق لتجربة الخامات واللمسات والراحة بنفسك.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section class="section" style="background: var(--vida-bone)">
+    <div class="container">
+      <div class="split">
+        <img src="images/pages/prof_p07.jpg" alt="Vida craftsmanship">
+        <div>
+          <span class="eyebrow"><span data-lang-en>About Vida</span><span data-lang-ar>عن فيدا</span></span>
+          <h2><span data-lang-en>Your destination for elegance and quality</span><span data-lang-ar>وجهتك المثالية للأناقة والجودة</span></h2>
+          <p><span data-lang-en>Vida is your ideal destination for modern and elegant office furniture. We offer unique collections that combine high quality with exquisite designs, adding a magical touch to your work environment.</span><span data-lang-ar>فيدا هي وجهتك المثالية للأثاث المكتبي العصري والأنيق. نقدم مجموعات فريدة تجمع بين الجودة العالية والتصاميم الراقية، لإضافة لمسة سحرية على بيئة عملك.</span></p>
+          <p><span data-lang-en>We believe furniture plays a pivotal role in improving the quality of work life — transforming workspaces into inspiring and comfortable places that foster creativity and productivity.</span><span data-lang-ar>نؤمن بأن الأثاث يلعب دوراً محورياً في تحسين جودة حياة العمل — لتحويل مساحات العمل إلى أماكن ملهمة ومريحة تعزز الإبداع والإنتاجية.</span></p>
+          <a href="pages/about.html" class="btn btn--primary">
+            <span data-lang-en>Read Our Story →</span><span data-lang-ar>اقرأ قصتنا ←</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner">
+        <h2><span data-lang-en>Designing your office?</span><span data-lang-ar>بتصمم مكتبك؟</span></h2>
+        <p><span data-lang-en>Our consultants help you plan, specify, and furnish — at no extra cost. Get a tailored quote in 24 hours.</span><span data-lang-ar>مستشارونا يساعدونك في التخطيط والتحديد والتأثيث — بدون أي تكلفة إضافية. احصل على عرض سعر مخصص خلال 24 ساعة.</span></p>
+        <div class="cta-banner__actions">
+          <a href="pages/contact.html#quote" class="btn btn--gold">
+            <span data-lang-en>Request a Quote</span><span data-lang-ar>طلب عرض سعر</span>
+          </a>
+          <a href="https://wa.me/966550881411" class="btn btn--light">
+            <span data-lang-en>Chat on WhatsApp</span><span data-lang-ar>راسلنا واتساب</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/products.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    function renderHome() {
+      // Categories
+      const catsHTML = CATEGORIES.map(c => `
+        <a href="pages/products.html?cat=${c.id}" class="cat-card">
+          <img src="${c.image}" alt="${pickLang({en:c.en, ar:c.ar})}" loading="lazy">
+          <div class="cat-card__overlay">
+            <div class="cat-card__title">${pickLang({en:c.en, ar:c.ar})}</div>
+            <div class="cat-card__meta">${PRODUCTS.filter(p=>p.category===c.id).length} ${getLang()==="ar"?"منتج":"items"}</div>
+          </div>
+        </a>`).join("");
+      document.getElementById("categoriesGrid").innerHTML = catsHTML;
+
+      // Featured products
+      const featured = PRODUCTS.filter(p => p.featured).slice(0, 8);
+      document.getElementById("featuredGrid").innerHTML = featured.map(productCardHTML).join("");
+    }
+    window.onLangChange = renderHome;
+    document.addEventListener("DOMContentLoaded", () => {
+      // Wait for chrome to inject so lang is correct
+      setTimeout(renderHome, 0);
+    });
+  </script>
+</body>
+</html>

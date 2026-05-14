@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" data-title-en="About Us" data-title-ar="من نحن">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    /* Set lang/dir BEFORE first paint — prevents English flashing under Arabic */
+    (function() {
+      try {
+        var lang = localStorage.getItem("vida_lang") || "en";
+        document.documentElement.lang = lang;
+        document.documentElement.dir  = lang === "ar" ? "rtl" : "ltr";
+      } catch (e) {}
+    })();
+  </script>
+  <title>About VIDA — Modern Office Furniture in Riyadh</title>
+  <meta name="description" content="VIDA Office Furniture is your ideal destination for modern and elegant office furniture in Riyadh.">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+  <link rel="icon" href="../favicon.ico" sizes="any">
+</head>
+<body data-page="about">
+
+  <section class="hero" style="min-height: 56vh">
+    <div class="hero__media" style="background-image:url('../images/pages/prof_p09.jpg')"></div>
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <span class="eyebrow" style="color: var(--vida-gold)"><span data-lang-en>Our Story</span><span data-lang-ar>قصتنا</span></span>
+      <h1>
+        <span data-lang-en>The <span>Vida</span> story.</span>
+        <span data-lang-ar>قصة <span>فيدا</span>.</span>
+      </h1>
+      <p>
+        <span data-lang-en>The intense pursuit of expansion, the quest for knowledge, the aspiration for acknowledgment — these are the driving forces behind Vida Office Furniture.</span>
+        <span data-lang-ar>السعي المكثف للتوسع، والتطلع للمعرفة، والطموح للاعتراف — هذه هي القوى المحركة لفيدا الأولى للأثاث المكتبي.</span>
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="split">
+        <img src="../images/pages/prof_p04.jpg" alt="Vida office showroom">
+        <div>
+          <span class="eyebrow"><span data-lang-en>About Us</span><span data-lang-ar>من نحن</span></span>
+          <h2><span data-lang-en>Your ideal destination for elegant office furniture</span><span data-lang-ar>وجهتك المثالية للأثاث المكتبي الأنيق</span></h2>
+          <p><span data-lang-en>Vida is your ideal destination for modern and elegant office furniture. We offer unique collections that combine high quality with exquisite designs — adding a magical touch to your work environment.</span><span data-lang-ar>فيدا هي وجهتك المثالية للأثاث المكتبي العصري والأنيق. نقدم مجموعات فريدة تجمع بين الجودة العالية والتصاميم الراقية — لإضافة لمسة سحرية على بيئة عملك.</span></p>
+          <p><span data-lang-en>From our flagship showroom on Abu Bakr Al-Siddiq Street in Riyadh, we serve corporate clients, government entities, schools, stadiums, and cafés across the Kingdom.</span><span data-lang-ar>من معرضنا الرئيسي في شارع أبو بكر الصديق بالرياض، نخدم الشركات والجهات الحكومية والمدارس والملاعب والمقاهي في جميع أنحاء المملكة.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--vida-bone)">
+    <div class="container">
+      <div class="split split--reverse">
+        <img src="../images/pages/prof_p06.jpg" alt="Vida vision">
+        <div>
+          <span class="eyebrow"><span data-lang-en>Our Vision</span><span data-lang-ar>رؤيتنا</span></span>
+          <h2><span data-lang-en>Workspaces that foster creativity</span><span data-lang-ar>مساحات تُغذّي الإبداع</span></h2>
+          <p><span data-lang-en>At Vida, we strive to transform workspaces into inspiring and comfortable places that foster creativity and productivity. We believe that furniture plays a pivotal role in improving the quality of work life.</span><span data-lang-ar>في فيدا، نسعى لتحويل مساحات العمل إلى أماكن ملهمة ومريحة تُعزز الإبداع والإنتاجية. نؤمن بأن الأثاث يلعب دوراً محورياً في تحسين جودة حياة العمل.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow"><span data-lang-en>What We Stand For</span><span data-lang-ar>ما نؤمن به</span></span>
+        <h2><span data-lang-en>Three pillars of every Vida piece</span><span data-lang-ar>ثلاثة أركان في كل قطعة من فيدا</span></h2>
+      </div>
+      <div class="grid cols-3 cols-3-md">
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <h3><span data-lang-en>Quality</span><span data-lang-ar>الجودة</span></h3>
+          <p><span data-lang-en>Every product passes a multi-point inspection. We source materials from trusted manufacturers and stand behind our warranties.</span><span data-lang-ar>كل منتج يمر بفحص متعدد النقاط. نختار خاماتنا من مصنّعين موثوقين ونقف خلف ضماناتنا.</span></p>
+        </div>
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v18M3 12h18"/></svg>
+          </div>
+          <h3><span data-lang-en>Design</span><span data-lang-ar>التصميم</span></h3>
+          <p><span data-lang-en>Modern silhouettes, considered proportions, and finishes that age gracefully. Form meets function in every piece.</span><span data-lang-ar>خطوط حديثة ونسب مدروسة ولمسات نهائية تتقدم بشكل أنيق. الشكل يلتقي بالوظيفة في كل قطعة.</span></p>
+        </div>
+        <div class="value-card">
+          <div class="value-card__icon">
+            <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <h3><span data-lang-en>Service</span><span data-lang-ar>الخدمة</span></h3>
+          <p><span data-lang-en>From space planning to installation, our team handles the details. Customized solutions, on-time delivery, dedicated after-sales support.</span><span data-lang-ar>من تخطيط المساحة إلى التركيب، فريقنا يتولى التفاصيل. حلول مخصصة وتسليم في الموعد ودعم متفانٍ بعد البيع.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: var(--vida-darker); color: #fff;">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow"><span data-lang-en>Categories We Serve</span><span data-lang-ar>القطاعات التي نخدمها</span></span>
+        <h2 style="color: #fff"><span data-lang-en>Built for every kind of space</span><span data-lang-ar>مصممون لكل نوع من المساحات</span></h2>
+      </div>
+      <div class="grid cols-3 cols-3-md">
+        <div style="text-align:center; padding: 24px;">
+          <div style="font-size: 2.4rem; margin-bottom: 12px;">🏢</div>
+          <h3 style="color: var(--vida-gold)"><span data-lang-en>Corporate Offices</span><span data-lang-ar>المكاتب المؤسسية</span></h3>
+          <p style="color: #c9d1ce"><span data-lang-en>Executive suites, admin offices, meeting rooms, workstations, and full fit-outs.</span><span data-lang-ar>أجنحة تنفيذية، مكاتب إدارية، غرف اجتماعات، محطات عمل، وتجهيز كامل.</span></p>
+        </div>
+        <div style="text-align:center; padding: 24px;">
+          <div style="font-size: 2.4rem; margin-bottom: 12px;">🏫</div>
+          <h3 style="color: var(--vida-gold)"><span data-lang-en>Schools & Universities</span><span data-lang-ar>المدارس والجامعات</span></h3>
+          <p style="color: #c9d1ce"><span data-lang-en>Ergonomic student desks, teacher furniture, lecture seating, and library systems.</span><span data-lang-ar>مكاتب طلاب مريحة، أثاث للمعلمين، مقاعد محاضرات، وأنظمة مكتبات.</span></p>
+        </div>
+        <div style="text-align:center; padding: 24px;">
+          <div style="font-size: 2.4rem; margin-bottom: 12px;">☕</div>
+          <h3 style="color: var(--vida-gold)"><span data-lang-en>Cafés & Hospitality</span><span data-lang-ar>المقاهي والضيافة</span></h3>
+          <p style="color: #c9d1ce"><span data-lang-en>Café tables, lounge chairs, bar sets, and bespoke seating to fit your brand.</span><span data-lang-ar>طاولات كافيهات، كراسي لاونج، أطقم بار، ومقاعد مخصصة لتناسب علامتك.</span></p>
+        </div>
+        <div style="text-align:center; padding: 24px;">
+          <div style="font-size: 2.4rem; margin-bottom: 12px;">🏟️</div>
+          <h3 style="color: var(--vida-gold)"><span data-lang-en>Stadiums & Arenas</span><span data-lang-ar>الملاعب والمدرجات</span></h3>
+          <p style="color: #c9d1ce"><span data-lang-en>Heavy-duty stadium seats, VIP boxes, and fire-rated arena seating systems.</span><span data-lang-ar>كراسي ملاعب قوية التحمل، مقصورات VIP، وأنظمة جلوس مقاومة للحريق.</span></p>
+        </div>
+        <div style="text-align:center; padding: 24px;">
+          <div style="font-size: 2.4rem; margin-bottom: 12px;">🏛️</div>
+          <h3 style="color: var(--vida-gold)"><span data-lang-en>Government</span><span data-lang-ar>القطاع الحكومي</span></h3>
+          <p style="color: #c9d1ce"><span data-lang-en>Compliant procurement, secure delivery, and full project documentation.</span><span data-lang-ar>توريد متوافق، تسليم آمن، وتوثيق كامل للمشروع.</span></p>
+        </div>
+        <div style="text-align:center; padding: 24px;">
+          <div style="font-size: 2.4rem; margin-bottom: 12px;">📚</div>
+          <h3 style="color: var(--vida-gold)"><span data-lang-en>Archive & Storage</span><span data-lang-ar>الأرشفة والتخزين</span></h3>
+          <p style="color: #c9d1ce"><span data-lang-en>Mobile shelving, fireproof cabinets, and high-density filing systems.</span><span data-lang-ar>رفوف متحركة، خزائن مقاومة للحريق، وأنظمة ملفات عالية الكثافة.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="cta-banner">
+        <h2 style="color: #fff"><span data-lang-en>Let's build your space together</span><span data-lang-ar>هيا نبني مساحتك معاً</span></h2>
+        <p><span data-lang-en>Visit our showroom, browse the catalogue, or chat with a consultant — we're ready when you are.</span><span data-lang-ar>زُر المعرض، استعرض الكاتالوج، أو تحدث مع مستشار — نحن جاهزون متى ما كنت جاهزاً.</span></p>
+        <div class="cta-banner__actions">
+          <a href="contact.html" class="btn btn--gold"><span data-lang-en>Contact Us</span><span data-lang-ar>تواصل معنا</span></a>
+          <a href="products.html" class="btn btn--light"><span data-lang-en>Browse Products</span><span data-lang-ar>تصفّح المنتجات</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="../js/products.js"></script>
+  <script src="../js/main.js"></script>
+</body>
+</html>

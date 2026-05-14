@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs / tmp
+*.log
+/tmp/
+node_modules/
+
+# Local environment / secret keys (in case anyone adds a .env later)
+.env
+.env.local
+.env.*.local
+
+# OS thumbnails
+Thumbs.db
+ehthumbs.db
+desktop.ini
