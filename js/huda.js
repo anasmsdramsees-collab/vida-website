@@ -465,7 +465,7 @@ const Huda = {
       <button class="huda-fab" id="hudaFab" aria-label="Open chat with Huda">
         <div class="huda-fab__avatar">
           <img class="huda-fab__img"
-               src="${(location.pathname.includes("/pages/") ? "../" : "")}images/brand/huda-avatar.jpg"
+               src="${(location.pathname.includes("/pages/") ? "../" : "")}images/brand/huda-avatar-sm.jpg"
                alt=""
                onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
           <svg class="huda-fab__fallback" viewBox="0 0 100 100" style="display:none;">
