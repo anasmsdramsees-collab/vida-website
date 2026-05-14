@@ -26,3 +26,6 @@ node_modules/
 Thumbs.db
 ehthumbs.db
 desktop.ini
+
+# ChatGPT / DALL-E exports (not needed in the repo)
+ChatGPT Image*.png
