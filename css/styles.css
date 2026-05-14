@@ -655,6 +655,7 @@ html[lang="ar"] .split--reverse > * { direction: rtl; }
 /* ===========================================================
    HUDA — Sales Chatbot
    =========================================================== */
+/* "Chat with Huda" floating popup-card */
 .huda-fab {
   position: fixed;
   bottom: 24px;
@@ -662,20 +663,45 @@ html[lang="ar"] .split--reverse > * { direction: rtl; }
   z-index: 60;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 18px 12px 14px;
-  background: linear-gradient(135deg, var(--vida-dark), var(--vida-darker));
-  color: #fff;
+  gap: 12px;
+  padding: 8px 22px 8px 8px;
+  background: #fff;
+  color: var(--vida-darker);
   border-radius: 999px;
-  box-shadow: 0 12px 32px rgba(21, 59, 42, .35);
+  box-shadow: 0 14px 36px rgba(21, 59, 42, .25), 0 1px 0 rgba(21,59,42,.05);
   font-family: var(--font-brand);
-  font-weight: 700;
-  font-size: .92rem;
   cursor: pointer;
   transition: transform .2s, box-shadow .2s;
+  text-align: start;
+  max-width: 240px;
 }
-.huda-fab:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(21, 59, 42, .5); }
-.huda-fab__icon { width: 22px; height: 22px; color: var(--vida-gold); }
+.huda-fab:hover { transform: translateY(-3px); box-shadow: 0 18px 44px rgba(21, 59, 42, .35); }
+html[lang="ar"] .huda-fab { padding: 8px 8px 8px 22px; }
+
+.huda-fab__avatar {
+  position: relative;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--vida-gold);
+}
+.huda-fab__img,
+.huda-fab__fallback { width: 100%; height: 100%; object-fit: cover; display: block; }
+.huda-fab__online {
+  position: absolute;
+  bottom: 1px; inset-inline-end: 1px;
+  width: 12px; height: 12px;
+  background: #2ea043;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.huda-fab__text { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+.huda-fab__name { font-weight: 800; font-size: .98rem; color: var(--vida-darker); }
+.huda-fab__sub  { font-size: .76rem; color: var(--text-mute); font-weight: 500; }
+
 .huda-fab__pulse {
   position: absolute;
   inset: -2px;
@@ -686,13 +712,14 @@ html[lang="ar"] .split--reverse > * { direction: rtl; }
   pointer-events: none;
 }
 @keyframes huda-pulse {
-  0%   { transform: scale(0.95); opacity: 0.55; }
-  70%  { transform: scale(1.18); opacity: 0; }
+  0%   { transform: scale(0.95); opacity: 0.5; }
+  70%  { transform: scale(1.14); opacity: 0; }
   100% { opacity: 0; }
 }
 @media (max-width: 600px) {
-  .huda-fab__label { display: none; }
-  .huda-fab { padding: 14px; }
+  .huda-fab { max-width: none; }
+  .huda-fab__text { display: none; }
+  .huda-fab { padding: 6px; }
 }
 
 .huda-panel {
@@ -731,7 +758,10 @@ html[lang="ar"] .split--reverse > * { direction: rtl; }
   flex-shrink: 0;
   position: relative;
   box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  background: var(--vida-gold);
 }
+.huda-avatar__img      { width: 100%; height: 100%; object-fit: cover; display: block; }
+.huda-avatar__fallback { width: 100%; height: 100%; }
 .huda-avatar::after {
   content: "";
   position: absolute;
