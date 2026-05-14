@@ -91,8 +91,8 @@ bank: {
 
 ```javascript
 const VIDA = {
-  whatsapp: "966550881411",          // ✅ الرقم اللي بتستقبل عليه الطلبات
-  phone:    "0550881411",
+  whatsapp: "966535732765",          // ✅ الرقم اللي بتستقبل عليه الطلبات
+  phone:    "0535732765",
   email:    "info@vidaaloula.com",
   ...
 };

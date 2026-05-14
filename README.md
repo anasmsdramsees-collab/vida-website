@@ -131,7 +131,7 @@ This is a 100% static site, so you can drop it on:
 
 **VIDA Office Furniture** — Riyadh, Saudi Arabia
 📍 Abu Bakr Al-Siddiq Street
-📞 [0550881411](tel:+966550881411) · 💬 [WhatsApp](https://wa.me/966550881411)
+📞 [0535732765](tel:+966535732765) · 💬 [WhatsApp](https://wa.me/966535732765)
 🌐 [vidaaloula.com](https://vidaaloula.com)
 
 ---

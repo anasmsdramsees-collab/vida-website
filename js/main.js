@@ -4,8 +4,9 @@
    ============================================================ */
 
 const VIDA = {
-  whatsapp: "966550881411",
-  phone: "0550881411",
+  whatsapp: "966535732765",            // E.164 (no +, no spaces) — for wa.me links
+  phone: "+966 53 573 2765",           // Display format
+  phone_dial: "+966535732765",         // tel: link format
   email: "info@vidaaloula.com",
   address_en: "Riyadh — Abu Bakr Al-Siddiq Street",
   address_ar: "الرياض — شارع أبو بكر الصديق",
